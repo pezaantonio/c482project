@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="383.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.ModifyPartController">
+    <children>
+        <Button layoutX="157.0" layoutY="235.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Exit" />
+        <Label layoutX="133.0" layoutY="70.0" text="Second">
+         <font>
+            <Font size="36.0" />
+         </font></Label>
+      <Button layoutX="152.0" layoutY="148.0" mnemonicParsing="false" onAction="#toMain" prefHeight="37.0" prefWidth="78.0" text="to Main">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+    </children>
+</AnchorPane>
