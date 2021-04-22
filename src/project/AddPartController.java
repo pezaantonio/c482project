@@ -10,10 +10,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.w3c.dom.Text;
+import project.model.Part;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AddPartController implements Initializable {
@@ -51,19 +53,19 @@ public class AddPartController implements Initializable {
     public TextField partIDCompNameTxt;
 
     @FXML
-    private TableView<?> partTableView;
+    private TableView<Part> partTableView;
 
     @FXML
-    private TableColumn<?, ?> partIDCol;
+    private TableColumn<Part, Integer> partIDCol;
 
     @FXML
-    private TableColumn<?, ?> partNameCol;
+    private TableColumn<Part, String> partNameCol;
 
     @FXML
-    private TableColumn<?, ?> partInvCol;
+    private TableColumn<Part, Integer> partInvCol;
 
     @FXML
-    private TableColumn<?, ?> partPriceCol;
+    private TableColumn<Part, Float> partPriceCol;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -72,12 +74,20 @@ public class AddPartController implements Initializable {
 
     // This function is the button that will change from one window to the next window
     public void toMain(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("view/Main.fxml"));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setTitle("Main Window");
-        stage.setScene(scene);
-        stage.show();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Cancel");
+        alert.setContentText("Are you sure you want to cancel and return to the main window? Unsaved progress will be deleted");
+        Optional<ButtonType> result=alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK){
+            Parent root = FXMLLoader.load(getClass().getResource("view/Main.fxml"));
+            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setTitle("Modify Part");
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     // These two functions will change the the last box in the add part depending on which radio button is selected
@@ -91,11 +101,6 @@ public class AddPartController implements Initializable {
 
     @FXML
     void onActionAddPart(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onActionRemoteAssocPart(ActionEvent event) {
 
     }
 

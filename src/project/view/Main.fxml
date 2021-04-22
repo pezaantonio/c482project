@@ -1,38 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="388.0" prefWidth="892.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="1158.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.Controller">
    <children>
-      <Button layoutX="799.0" layoutY="336.0" mnemonicParsing="false" onAction="#exitApplication" prefHeight="25.0" prefWidth="70.0" text="Exit">
-         <font>
-            <Font name="JetBrains Mono Regular" size="14.0" />
-         </font></Button>
-      <Label fx:id="theLabel" layoutX="54.0" layoutY="39.0" prefHeight="50.0" prefWidth="315.0" text="Inventory Management System">
-         <font>
-            <Font name="JetBrains Mono Bold" size="18.0" />
-         </font></Label>
-      <Button layoutX="394.0" layoutY="161.0" mnemonicParsing="false" onAction="#toModifyPart" prefHeight="39.0" prefWidth="117.0" text="Modify Part">
-         <font>
-            <Font name="JetBrains Mono Regular" size="14.0" />
-         </font>
-      </Button>
-      <Button layoutX="153.0" layoutY="161.0" mnemonicParsing="false" onAction="#toAddPart" prefHeight="39.0" prefWidth="117.0" text="Add Part">
-         <font>
-            <Font name="JetBrains Mono Regular" size="14.0" />
-         </font>
-      </Button>
-      <Button layoutX="153.0" layoutY="244.0" mnemonicParsing="false" onAction="#toAddProduct" prefHeight="30.0" prefWidth="209.0" text="Add Product">
-         <font>
-            <Font name="JetBrains Mono Regular" size="14.0" />
-         </font>
-      </Button>
-      <Button layoutX="405.0" layoutY="244.0" mnemonicParsing="false" onAction="#toModifyProduct" prefHeight="30.0" prefWidth="293.0" text="Modify Product">
-         <font>
-            <Font name="JetBrains Mono Regular" size="14.0" />
-         </font>
-      </Button>
+      <GridPane layoutY="1.0" prefHeight="491.0" prefWidth="1155.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="271.0" minHeight="10.0" prefHeight="123.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="374.0" minHeight="10.0" prefHeight="268.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="181.0" minHeight="0.0" prefHeight="85.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" onAction="#exitApplication" prefHeight="25.0" prefWidth="70.0" text="Exit" GridPane.rowIndex="2">
+               <font>
+                  <Font name="JetBrains Mono Regular" size="14.0" />
+               </font>
+            </Button>
+            <Label fx:id="theLabel" prefHeight="50.0" prefWidth="315.0" text="Inventory Management System">
+               <font>
+                  <Font name="JetBrains Mono Bold" size="18.0" />
+               </font>
+            </Label>
+            <Button mnemonicParsing="false" onAction="#toModifyPart" prefHeight="32.0" prefWidth="117.0" text="Modify Part" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <font>
+                  <Font name="JetBrains Mono Regular" size="14.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#toAddPart" prefHeight="32.0" prefWidth="117.0" text="Add Part" GridPane.rowIndex="2">
+               <font>
+                  <Font name="JetBrains Mono Regular" size="14.0" />
+               </font>
+            </Button>
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#toModifyProduct" prefHeight="30.0" prefWidth="177.0" text="Modify Product" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <font>
+                  <Font name="JetBrains Mono Regular" size="14.0" />
+               </font>
+            </Button>
+            <TableView fx:id="productTableView" prefHeight="214.0" prefWidth="477.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <columns>
+                  <TableColumn fx:id="productIDCol" prefWidth="120.0" text="Product ID" />
+                  <TableColumn fx:id="productNameCol" prefWidth="120.0" text="Product Name" />
+                  <TableColumn fx:id="productInvCol" prefWidth="120.0" text="Inventory Level" />
+                  <TableColumn fx:id="productPriceCol" prefWidth="120.0" text="Price per Unit" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <TableView fx:id="partTableView" prefHeight="195.0" prefWidth="461.0" GridPane.rowIndex="1">
+               <columns>
+                  <TableColumn fx:id="partIDCol" prefWidth="120.0" text="Part ID" />
+                  <TableColumn fx:id="partNameCol" prefWidth="120.0" text="Part Name" />
+                  <TableColumn fx:id="partInvCol" prefWidth="120.0" text="Inventory Level" />
+                  <TableColumn fx:id="partPriceCol" prefWidth="120.0" text="Price per Unit" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <Label snapToPixel="false" text="Products" StackPane.alignment="BOTTOM_LEFT">
+                     <font>
+                        <Font name="JetBrains Mono Bold" size="14.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets bottom="20.0" left="50.0" top="75.0" />
+                     </StackPane.margin>
+                  </Label>
+               </children></StackPane>
+            <Label snapToPixel="false" text="Parts">
+               <GridPane.margin>
+                  <Insets left="50.0" top="75.0" />
+               </GridPane.margin>
+               <font>
+                  <Font name="JetBrains Mono Bold" size="14.0" />
+               </font>
+            </Label>
+            <Button contentDisplay="RIGHT" layoutX="988.0" layoutY="441.0" mnemonicParsing="false" onAction="#toAddProduct" prefHeight="30.0" prefWidth="177.0" text="Add Product" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font name="JetBrains Mono Regular" size="14.0" />
+               </font>
+            </Button>
+            <Button layoutX="241.0" layoutY="440.0" mnemonicParsing="false" onAction="#deletePart" prefHeight="32.0" prefWidth="117.0" text="Delete Part" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+               <font>
+                  <Font name="JetBrains Mono Regular" size="14.0" />
+               </font>
+            </Button>
+            <Button contentDisplay="RIGHT" layoutX="588.0" layoutY="441.0" mnemonicParsing="false" onAction="#deleteProduct" prefHeight="30.0" prefWidth="177.0" text="Delete Product" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+               <font>
+                  <Font name="JetBrains Mono Regular" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>

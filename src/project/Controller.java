@@ -6,7 +6,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import project.model.invDataProvider;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -17,6 +19,18 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        partTableView.setItems(invDataProvider.getAllParts());
+        partIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        partNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        partInvCol.setCellValueFactory((new PropertyValueFactory<>("inv")));
+        partPriceCol.setCellValueFactory((new PropertyValueFactory<>("price")));
+
+        productTableView.setItems(invDataProvider.getAllParts());
+        productIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        productNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        productInvCol.setCellValueFactory((new PropertyValueFactory<>("inv")));
+        productPriceCol.setCellValueFactory((new PropertyValueFactory<>("price")));
 
     }
 
