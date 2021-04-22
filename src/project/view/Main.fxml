@@ -24,5 +24,15 @@
             <Font name="JetBrains Mono Regular" size="14.0" />
          </font>
       </Button>
+      <Button layoutX="153.0" layoutY="244.0" mnemonicParsing="false" onAction="#toAddProduct" prefHeight="30.0" prefWidth="209.0" text="Add Product">
+         <font>
+            <Font name="JetBrains Mono Regular" size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="405.0" layoutY="244.0" mnemonicParsing="false" onAction="#toModifyProduct" prefHeight="30.0" prefWidth="293.0" text="Modify Product">
+         <font>
+            <Font name="JetBrains Mono Regular" size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

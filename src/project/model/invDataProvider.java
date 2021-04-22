@@ -12,7 +12,7 @@ import javafx.collections.ObservableList;
 public class invDataProvider {
 
     // This is an observable list from the fxcollections class.
-    // I'm using the <> operator to specify which class will be inthe list
+    // I'm using the <> operator to specify which class will be in the list
     private static ObservableList<Part> allParts = FXCollections.observableArrayList();
 
     // these two functions will handle the addPart and getPart

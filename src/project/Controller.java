@@ -40,6 +40,24 @@ public class Controller implements Initializable {
         stage.show();
     }
 
+    public void toAddProduct(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("view/AddProduct.fxml"));
+        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setTitle("Add Product");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void toModifyProduct(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("view/ModifyProduct.fxml"));
+        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setTitle("Modify Product");
+        stage.setScene(scene);
+        stage.show();
+    }
+
     // This is the exit button
     public void exitApplication(ActionEvent actionEvent) {
         System.exit(0);
