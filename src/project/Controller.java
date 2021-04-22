@@ -1,21 +1,58 @@
 package project;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import project.model.Part;
 import project.model.invDataProvider;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
+
+    @FXML
+    private Label theLabel;
+
+    @FXML
+    private TableView<Part> productTableView;
+
+    @FXML
+    private TableColumn<?, ?> productIDCol;
+
+    @FXML
+    private TableColumn<?, ?> productNameCol;
+
+    @FXML
+    private TableColumn<?, ?> productInvCol;
+
+    @FXML
+    private TableColumn<?, ?> productPriceCol;
+
+    @FXML
+    private TableView<Part> partTableView;
+
+    @FXML
+    private TableColumn<Part, Integer> partIDCol;
+
+    @FXML
+    private TableColumn<Part, String> partNameCol;
+
+    @FXML
+    private TableColumn<Part, Integer> partInvCol;
+
+    @FXML
+    private TableColumn<Part, Float> partPriceCol;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -71,6 +108,17 @@ public class Controller implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
+    @FXML
+    void deletePart(ActionEvent event) {
+
+    }
+
+    @FXML
+    void deleteProduct(ActionEvent event) {
+
+    }
+
 
     // This is the exit button
     public void exitApplication(ActionEvent actionEvent) {
