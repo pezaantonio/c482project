@@ -40,4 +40,9 @@ public class Controller implements Initializable {
         stage.show();
     }
 
+    // This is the exit button
+    public void exitApplication(ActionEvent actionEvent) {
+        System.exit(0);
+    }
+
 }
