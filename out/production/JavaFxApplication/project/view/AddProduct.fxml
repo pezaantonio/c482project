@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="388.0" prefWidth="892.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.AddProductController">
+   <children>
+      <Button layoutX="799.0" layoutY="336.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Exit" />
+      <Label fx:id="theLabel" layoutX="54.0" layoutY="39.0" prefHeight="50.0" prefWidth="315.0" text="Inventory Management System">
+         <font>
+            <Font name="JetBrains Mono Bold" size="18.0" />
+         </font></Label>
+      <Button layoutX="394.0" layoutY="161.0" mnemonicParsing="false" onAction="#toSecond" text="to Second">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
