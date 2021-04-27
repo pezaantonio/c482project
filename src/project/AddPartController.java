@@ -10,7 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.w3c.dom.Text;
+import project.model.InHouse;
 import project.model.Part;
+import project.model.invDataProvider;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -105,7 +107,40 @@ public class AddPartController implements Initializable {
     }
 
     @FXML
-    void onActionSave(ActionEvent event) {
+    void onActionSavePart(ActionEvent event) throws IOException {
 
+        // Using the Integer.parseInt method to get what's in the text box and change it into an int
+        int partID = Integer.parseInt(partIDTxt.getText());
+        String partName = partNameTxt.getText();
+        Float partPrice = Float.parseFloat(partPriceTxt.getText());
+        int partInv = Integer.parseInt(partInvTxt.getText());
+        int partMin = Integer.parseInt(partMinTxt.getText());
+        int partMax = Integer.parseInt(partMaxTxt.getText());
+        int partMachineID;
+        String partCompName;
+        boolean partAddition = false;
+
+        if (partName.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("WARNING");
+            alert.setContentText("Please enter the part name");
+            Optional<ButtonType> result=alert.showAndWait();
+        } else {
+            if (inHouse.isSelected()){
+                try {
+                    partMachineID = Integer.parseInt(partIDCompNameTxt.getText());
+                    InHouse partInHouse = new InHouse(partID, partName, partPrice, partInv, partMin, partMax, partMachineID);
+                    partInHouse.setId(invDataProvider.getNewPartID());
+                    invDataProvider.addPart(partInHouse);
+                    partAddition = true;
+                } catch (Exception e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR");
+                    alert.setContentText("There is an error in the entries, please re-enter the values and try again");
+                    Optional<ButtonType> result=alert.showAndWait();
+                }
+            }
+
+        }
     }
 }

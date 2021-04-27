@@ -96,7 +96,7 @@
             <Font name="JetBrains Mono Bold" size="24.0" />
          </font>
       </Label>
-      <Button layoutX="489.0" layoutY="487.0" mnemonicParsing="false" text="Save">
+      <Button layoutX="489.0" layoutY="487.0" mnemonicParsing="false" onAction="#onActionSavePart" text="Save">
          <font>
             <Font name="JetBrains Mono Regular" size="14.0" />
          </font>
