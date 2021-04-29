@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import project.model.InHouse;
 import project.model.OutSourced;
 import project.model.Part;
+import project.model.invDataProvider;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,6 +23,7 @@ public class ModifyPartController implements Initializable {
 
     // This is a variable that imports my Part class. It is used to hold the part the user selects
     private Part selectedPart;
+
 
     // All these variables reference the FXML file that the UI is based off of
     // The radio buttons will change the labels depending on which is selected
@@ -57,7 +59,7 @@ public class ModifyPartController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        selectedPart = Controller.modifyThisPart();
+        selectedPart = Controller.getModifyPart();
 
         if (selectedPart instanceof InHouse) {
             inHouseRadio.setSelected(true);
@@ -73,6 +75,7 @@ public class ModifyPartController implements Initializable {
         partIDTxt.setText(String.valueOf(selectedPart.getId()));
         partNameTxt.setText(selectedPart.getName());
         partInvTxt.setText(String.valueOf(selectedPart.getStock()));
+        partPriceTxt.setText(String.valueOf(selectedPart.getPrice()));
         partMaxTxt.setText(String.valueOf(selectedPart.getMax()));
         partMinTxt.setText(String.valueOf(selectedPart.getMin()));
     }
@@ -103,6 +106,61 @@ public class ModifyPartController implements Initializable {
     public void outSourced(ActionEvent actionEvent) {
         changeMe.setText("Company Name: ");
     }
+
+    @FXML
+    void onActionSavePart(ActionEvent event) throws IOException {
+
+        // The application will not crash when inappropriate user data is entered in the forms, error messages generated
+        // Using the Integer.parseInt method to get what's in the text box and change it into an int
+        try {
+            int partID = selectedPart.getId();
+            String partName = partNameTxt.getText();
+            Float partPrice = Float.parseFloat(partPriceTxt.getText());
+            int partInv = Integer.parseInt(partInvTxt.getText());
+            int partMin = Integer.parseInt(partMinTxt.getText());
+            int partMax = Integer.parseInt(partMaxTxt.getText());
+            int partMachineID;
+            String partCompName;
+            boolean partAddition = false;
+
+
+            if (minValid(partMin, partMax))
+                if (inHouseRadio.isSelected()) {
+                    try {
+                        partMachineID = Integer.parseInt(partIDCompNameTxt.getText());
+                        InHouse partInHouse = new InHouse(partID, partName, partPrice, partInv, partMin, partMax, partMachineID);
+                        partInHouse.setId(invDataProvider.getNewPartID());
+                        invDataProvider.addPart(partInHouse);
+                        partAddition = true;
+                    } catch (Exception e) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("ERROR");
+                        alert.setContentText("There is an error in the entries, please re-enter the values and try again");
+                        Optional<ButtonType> result = alert.showAndWait();
+                    }
+                    }
+                if (outSourcedRadio.isSelected()) {
+                    partCompName = partIDCompNameTxt.getText();
+                    OutSourced partOutSourced = new OutSourced(partID, partName, partPrice, partInv, partMin, partMax, partCompName);
+                    partOutSourced.setId(invDataProvider.getNewPartID());
+                    invDataProvider.addPart(partOutSourced);
+                    partAddition = true;
+                }
+
+                // After saving, the user is automatically redirected to the main form
+                if (partAddition) {
+                    saveRedirect(event);
+
+                }
+
+            } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setContentText("There is an error in the entries, please re-enter the values and try again");
+            Optional<ButtonType> result = alert.showAndWait();
+        }
+    }
+
     // Min should be less than Max; and Inv should be between those two values
     private boolean minValid(int min, int max) {
 
@@ -117,5 +175,21 @@ public class ModifyPartController implements Initializable {
             Optional<ButtonType> result=alert.showAndWait();
         }
         return partMinValid;
-}
+    }
+
+    public void saveRedirect(ActionEvent actionEvent) throws IOException{
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Main Screen");
+        alert.setContentText("Save Successful, returning to main menu");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK){
+            Parent root = FXMLLoader.load(getClass().getResource("view/Main.fxml"));
+            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+    }
 }

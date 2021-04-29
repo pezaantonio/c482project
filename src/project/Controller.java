@@ -7,9 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import project.model.Part;
@@ -18,6 +16,7 @@ import project.model.Product;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -85,14 +84,30 @@ public class Controller implements Initializable {
         stage.show();
     }
 
+    public static Part getModifyPart() {
+        return modifyPart;
+    }
+
     // This function is the button that will change from one window to the next window
     public void toModifyPart(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("view/ModifyPart.fxml"));
-        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setTitle("Modify Part");
-        stage.setScene(scene);
-        stage.show();
+
+        modifyPart = partTableView.getSelectionModel().getSelectedItem();
+
+        if(modifyPart == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setContentText("Please select a part");
+            Optional<ButtonType> result=alert.showAndWait();
+        } else {
+
+            Parent root = FXMLLoader.load(getClass().getResource("view/ModifyPart.fxml"));
+            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setTitle("Modify Part");
+            stage.setScene(scene);
+            stage.show();
+        }
+
     }
 
     public void toAddProduct(ActionEvent actionEvent) throws IOException {
@@ -105,6 +120,7 @@ public class Controller implements Initializable {
     }
 
     public void toModifyProduct(ActionEvent actionEvent) throws IOException {
+
         Parent root = FXMLLoader.load(getClass().getResource("view/ModifyProduct.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -116,16 +132,28 @@ public class Controller implements Initializable {
     @FXML
     void deletePart(ActionEvent event) {
 
+        Part selectedPart = partTableView.getSelectionModel().getSelectedItem();
+
+        if(selectedPart == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setContentText("Please select a part");
+            Optional<ButtonType> result=alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation");
+            alert.setContentText("Are you sure you want to delete selected part?");
+            Optional<ButtonType> result=alert.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                invDataProvider.deletePart(selectedPart);
+            }
+        }
     }
 
     @FXML
     void deleteProduct(ActionEvent event) {
 
-    }
-
-    //This will return the part that is selected to modify
-    public static Part modifyThisPart() {
-        return modifyPart;
     }
 
     // This is the exit button

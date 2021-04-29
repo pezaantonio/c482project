@@ -40,6 +40,17 @@ public class invDataProvider {
         return allParts;
     }
 
+    // Delete part
+    public static boolean deletePart(Part selectedPart){
+        if (allParts.contains(selectedPart)) {
+            allParts.remove(selectedPart);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     // Thes two functions will handle the addProduct, getAllProducts
     public static ObservableList<Product> getAllProducts() {
         return allProducts;
