@@ -30,10 +30,10 @@ public class AddProductController implements Initializable {
     public Label changeMe;
 
     @FXML
-    public RadioButton inHouse;
+    public RadioButton inHouseRadio;
 
     @FXML
-    public RadioButton outSourced;
+    public RadioButton outSourcedRadio;
 
     // Parts table and columns
 
@@ -89,14 +89,22 @@ public class AddProductController implements Initializable {
     @FXML
     private TableColumn<Part, Float> assocPartPriceCol;
 
+    // Initializes the two tables associated with products, the parts and associated parts
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         partTableView.setItems(invDataProvider.getAllParts());
         partIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         partNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        partInvCol.setCellValueFactory((new PropertyValueFactory<>("inv")));
+        partInvCol.setCellValueFactory((new PropertyValueFactory<>("stock")));
         partPriceCol.setCellValueFactory((new PropertyValueFactory<>("price")));
+
+        assocPartIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        assocPartNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        assocPartInvCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        assocPartPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+
 
     }
 

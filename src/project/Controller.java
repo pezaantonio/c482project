@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import project.model.Part;
 import project.model.invDataProvider;
+import project.model.Product;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,23 +22,26 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
+    //This is the part that is selected to be modified
+    private static Part modifyPart;
+
     @FXML
     private Label theLabel;
 
     @FXML
-    private TableView<Part> productTableView;
+    private TableView<Product> productTableView;
 
     @FXML
-    private TableColumn<?, ?> productIDCol;
+    private TableColumn<Product, Integer> productIDCol;
 
     @FXML
-    private TableColumn<?, ?> productNameCol;
+    private TableColumn<Product, String> productNameCol;
 
     @FXML
-    private TableColumn<?, ?> productInvCol;
+    private TableColumn<Product, Integer> productInvCol;
 
     @FXML
-    private TableColumn<?, ?> productPriceCol;
+    private TableColumn<Product, Float> productPriceCol;
 
     @FXML
     private TableView<Part> partTableView;
@@ -60,13 +64,13 @@ public class Controller implements Initializable {
         partTableView.setItems(invDataProvider.getAllParts());
         partIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         partNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        partInvCol.setCellValueFactory((new PropertyValueFactory<>("inv")));
+        partInvCol.setCellValueFactory((new PropertyValueFactory<>("stock")));
         partPriceCol.setCellValueFactory((new PropertyValueFactory<>("price")));
 
-        productTableView.setItems(invDataProvider.getAllParts());
+        productTableView.setItems(invDataProvider.getAllProducts());
         productIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         productNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        productInvCol.setCellValueFactory((new PropertyValueFactory<>("inv")));
+        productInvCol.setCellValueFactory((new PropertyValueFactory<>("stock")));
         productPriceCol.setCellValueFactory((new PropertyValueFactory<>("price")));
 
     }
@@ -119,6 +123,10 @@ public class Controller implements Initializable {
 
     }
 
+    //This will return the part that is selected to modify
+    public static Part modifyThisPart() {
+        return modifyPart;
+    }
 
     // This is the exit button
     public void exitApplication(ActionEvent actionEvent) {

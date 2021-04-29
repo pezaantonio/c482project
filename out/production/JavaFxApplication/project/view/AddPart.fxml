@@ -73,7 +73,7 @@
                      <font>
                         <Font name="JetBrains Mono Regular" size="14.0" />
                      </font></Label>
-                  <TextField fx:id="partIDTxt" GridPane.columnIndex="1" />
+                  <TextField fx:id="partIDTxt" editable="false" promptText="Auto Gen - Disabled" GridPane.columnIndex="1" />
                   <TextField fx:id="partNameTxt" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="partInvTxt" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="partPriceTxt" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -96,12 +96,12 @@
             <Font name="JetBrains Mono Bold" size="24.0" />
          </font>
       </Label>
-      <Button layoutX="489.0" layoutY="487.0" mnemonicParsing="false" text="Save">
+      <Button layoutX="489.0" layoutY="487.0" mnemonicParsing="false" onAction="#onActionSavePart" text="Save">
          <font>
             <Font name="JetBrains Mono Regular" size="14.0" />
          </font>
       </Button>
-      <Button layoutX="610.0" layoutY="487.0" mnemonicParsing="false" onAction="#toMain" text="Cancel">
+      <Button layoutX="610.0" layoutY="487.0" mnemonicParsing="false" onAction="#toMain" text="Return">
          <font>
             <Font name="JetBrains Mono Regular" size="14.0" />
          </font>

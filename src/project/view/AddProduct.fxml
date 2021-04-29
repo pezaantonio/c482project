@@ -119,12 +119,12 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <Button mnemonicParsing="false" onAction="#onActionAddPart" text="Add">
+            <Button mnemonicParsing="false" onAction="#onActionAddPart" text="Add Associated Part">
                <font>
                   <Font name="JetBrains Mono Regular" size="14.0" />
                </font>
                <VBox.margin>
-                  <Insets left="240.0" top="15.0" />
+                  <Insets left="170.0" top="15.0" />
                </VBox.margin>
             </Button>
          </children>

@@ -9,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import project.model.InHouse;
+import project.model.OutSourced;
 import project.model.Part;
 
 import java.io.IOException;
@@ -27,10 +29,10 @@ public class ModifyPartController implements Initializable {
     public Label changeMe;
 
     @FXML
-    public RadioButton inHouse;
+    public RadioButton inHouseRadio;
 
     @FXML
-    public RadioButton outSourced;
+    public RadioButton outSourcedRadio;
 
     @FXML
     public TextField partIDTxt;
@@ -55,7 +57,24 @@ public class ModifyPartController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        selectedPart = Controller.modifyThisPart();
 
+        if (selectedPart instanceof InHouse) {
+            inHouseRadio.setSelected(true);
+            partIDCompNameTxt.setText(String.valueOf(((InHouse) selectedPart).getPartMachineID()));
+        }
+
+        if (selectedPart instanceof OutSourced) {
+            outSourcedRadio.setSelected(true);
+            partIDCompNameTxt.setText(String.valueOf(((OutSourced) selectedPart).getPartCompName()));
+        }
+
+        //This will initialize the part that's going to get modified
+        partIDTxt.setText(String.valueOf(selectedPart.getId()));
+        partNameTxt.setText(selectedPart.getName());
+        partInvTxt.setText(String.valueOf(selectedPart.getStock()));
+        partMaxTxt.setText(String.valueOf(selectedPart.getMax()));
+        partMinTxt.setText(String.valueOf(selectedPart.getMin()));
     }
 
     // This function is the button that will change from the main window to the modify part window
@@ -63,7 +82,7 @@ public class ModifyPartController implements Initializable {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Cancel");
-        alert.setContentText("Are you sure you want to cancel and return to the main window? Unsaved progress will be deleted");
+        alert.setContentText("Are you sure you want to return to the main window? Unsaved progress will be deleted");
         Optional<ButtonType> result=alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK){
@@ -84,4 +103,19 @@ public class ModifyPartController implements Initializable {
     public void outSourced(ActionEvent actionEvent) {
         changeMe.setText("Company Name: ");
     }
+    // Min should be less than Max; and Inv should be between those two values
+    private boolean minValid(int min, int max) {
+
+        boolean partMinValid = true;
+
+        // if min is less than or equal to 0 OR min is greater than max, fail valid check
+        if (min <= 0 || min >= max){
+            partMinValid = false;
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setContentText("Minimum cannot be larger than the max");
+            Optional<ButtonType> result=alert.showAndWait();
+        }
+        return partMinValid;
+}
 }
