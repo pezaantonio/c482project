@@ -79,7 +79,7 @@
                         <TextField fx:id="partPriceTxt" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextField fx:id="partMaxTxt" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <TextField fx:id="partIDCompNameTxt" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <TextField fx:id="PartMinTxt" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                        <TextField fx:id="partMinTxt" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                         <Label text="Min:" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="4">
                             <font>
                                 <Font name="JetBrains Mono Regular" size="14.0" />
@@ -96,7 +96,7 @@
                 <Font name="JetBrains Mono Bold" size="24.0" />
             </font>
         </Label>
-        <Button layoutX="489.0" layoutY="487.0" mnemonicParsing="false" text="Save">
+        <Button layoutX="489.0" layoutY="487.0" mnemonicParsing="false" onAction="#onActionSavePart" text="Save">
             <font>
                 <Font name="JetBrains Mono Regular" size="14.0" />
             </font>

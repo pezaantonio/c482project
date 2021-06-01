@@ -1,4 +1,9 @@
 package project;
+/**
+ * This is the class to hold the AddProduct Controller
+ * @author Antonio Peza
+ *
+ * */
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,9 +18,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import project.model.Part;
-import project.model.invDataProvider;
+import project.model.Product;
+import project.model.Inventory;
 
-import javax.swing.text.html.Option;
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -24,8 +30,15 @@ import java.util.ResourceBundle;
 public class AddProductController implements Initializable {
 
     // The observable list for the parts associated with the product
+    /**
+     * This returns a list of associated parts
+     * @return assocParts
+     * */
     private ObservableList<Part> assocParts = FXCollections.observableArrayList();
 
+    /**
+     * This is the list of all the variables being used in the controller
+     * */
     @FXML
     public Label changeMe;
 
@@ -38,25 +51,28 @@ public class AddProductController implements Initializable {
     // Parts table and columns
 
     @FXML
-    private TextField partIDTxt;
+    private TextField prodIDTxt;
 
     @FXML
-    private TextField partNameTxt;
+    private TextField prodNameTxt;
 
     @FXML
-    private TextField partInvTxt;
+    private TextField prodInvTxt;
 
     @FXML
-    private TextField partPriceTxt;
+    private TextField prodPriceTxt;
 
     @FXML
-    private TextField partMaxTxt;
+    private TextField prodMaxTxt;
 
     @FXML
-    private TextField partIDCompNameTxt;
+    private TextField prodIDCompNameTxt;
 
     @FXML
-    private TextField partMinTxt;
+    private TextField prodMinTxt;
+
+    @FXML
+    private TextField partSearchTxt;
 
     @FXML
     private TableView<Part> partTableView;
@@ -90,10 +106,14 @@ public class AddProductController implements Initializable {
     private TableColumn<Part, Float> assocPartPriceCol;
 
     // Initializes the two tables associated with products, the parts and associated parts
+    /**
+     * This is initializing method that will load up the lists for the product
+     *
+     * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        partTableView.setItems(invDataProvider.getAllParts());
+        partTableView.setItems(Inventory.getAllParts());
         partIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         partNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         partInvCol.setCellValueFactory((new PropertyValueFactory<>("stock")));
@@ -104,21 +124,22 @@ public class AddProductController implements Initializable {
         assocPartInvCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         assocPartPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-
-
     }
 
     // This function is the button that will change from the main window to the modify part window
+    /**
+     * This will return the user to the main menu
+     * */
     public void toMain(ActionEvent actionEvent) throws IOException {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Cancel");
         alert.setContentText("Are you sure you want to cancel and return to the main window? Unsaved progress will be deleted");
-        Optional<ButtonType> result=alert.showAndWait();
+        Optional<ButtonType> result = alert.showAndWait();
 
-        if (result.isPresent() && result.get() == ButtonType.OK){
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             Parent root = FXMLLoader.load(getClass().getResource("view/Main.fxml"));
-            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setTitle("Modify Part");
             stage.setScene(scene);
@@ -126,16 +147,10 @@ public class AddProductController implements Initializable {
         }
     }
 
-    // These two functions will change the the last box in the add part depending on which radio button is selected
-    public void inHouse (ActionEvent actionEvent) {
-        changeMe.setText("Machine ID: ");
-    }
-
-    public void outSourced (ActionEvent actionEvent) {
-        changeMe.setText("Company Name: ");
-    }
-
     @FXML
+    /**
+     * This method will add everything when the fields are filled out and the add button is selected
+     * */
     void onActionAddPart(ActionEvent event) {
 
         Part selectedPart = partTableView.getSelectionModel().getSelectedItem();
@@ -179,7 +194,126 @@ public class AddProductController implements Initializable {
     }
 
     @FXML
-    void onActionSave(ActionEvent event) {
+    /**
+     * This method will save everything that was input in the fields
+     * */
+    void onActionSave(ActionEvent event) throws IOException {
+        try {
+            int prodIDTxt = 0;
+            String prodName = prodNameTxt.getText();
+            Float prodPrice = Float.parseFloat(prodPriceTxt.getText());
+            int prodInv = Integer.parseInt(prodInvTxt.getText());
+            int prodMin = Integer.parseInt(prodMinTxt.getText());
+            int prodMax = Integer.parseInt(prodMaxTxt.getText());
+
+            if (prodName.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("WARNING");
+                alert.setContentText("Please enter the product name");
+                Optional<ButtonType> result = alert.showAndWait();
+            } else {
+                if (minValid(prodMin, prodMax) && inventoryIsValid(prodMin, prodMax, prodInv)){
+                    Product newProduct = new Product(prodIDTxt, prodName, prodInv, prodPrice, prodMin, prodMax);
+
+                    for (Part part : assocParts) {
+                        newProduct.addAssocParts(part);
+                    }
+
+                    newProduct.setProductID(Inventory.getNewProductID());
+                    Inventory.addProduct(newProduct);
+                    saveRedirect(event);
+                }
+
+            }
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setContentText("There is an error in one or more entries. Please check your entries and try again");
+            Optional<ButtonType> result = alert.showAndWait();
+        }
 
     }
+
+    /**
+     * This will search parts from the add product window
+     *
+     *
+     *
+     * */
+    public void onSearchAction(ActionEvent event) {
+
+        ObservableList<Part> allParts = Inventory.getAllParts();
+        ObservableList<Part> partsFound = FXCollections.observableArrayList();
+        String searchString = partSearchTxt.getText();
+
+        for (Part part : allParts) {
+            if (String.valueOf(part.getId()).contains(searchString) || part.getName().contains(searchString)) {
+                partsFound.add(part);
+            }
+        }
+
+        partTableView.setItems(partsFound);
+
+        if (partsFound.size() == 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setContentText("Unable to find the part");
+            Optional<ButtonType> result = alert.showAndWait();
+
+        }
+    }
+
+    /**
+     * This will check to make sure that the inventory is between the min and the max
+     * @param min
+     * @param max
+     * @param stock
+     * @return boolean
+     *
+     * */
+    private boolean inventoryIsValid (int min, int max, int stock){
+        boolean isValid = true;
+
+        if (stock < min || stock > max){
+            isValid = false;
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setContentText("Inventory is not valid, please enter a valid inventory");
+            Optional<ButtonType> result=alert.showAndWait();
+        }
+        return isValid;
+    }
+
+    // Min should be less than Max; and Inv should be between those two values
+    private boolean minValid(int min, int max) {
+
+        boolean partMinValid = true;
+
+        // if min is less than or equal to 0 OR min is greater than max, fail valid check
+        if (min <= 0 || min >= max) {
+            partMinValid = false;
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setContentText("The maximum must be larger than the minimum");
+            Optional<ButtonType> result = alert.showAndWait();
+        }
+        return partMinValid;
+    }
+
+    public void saveRedirect(ActionEvent actionEvent) throws IOException{
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Main Screen");
+        alert.setContentText("Save Successful, returning to main menu");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK){
+            Parent root = FXMLLoader.load(getClass().getResource("view/Main.fxml"));
+            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+    }
 }
+

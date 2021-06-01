@@ -1,5 +1,10 @@
 package project;
-
+/**
+ * This is the controller for the AddPart FXML
+ *
+ * @author Antonio Peza
+ *
+ * */
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +17,7 @@ import javafx.stage.Stage;
 import project.model.InHouse;
 import project.model.OutSourced;
 import project.model.Part;
-import project.model.invDataProvider;
+import project.model.Inventory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +28,9 @@ public class AddPartController implements Initializable {
 
     // All these variables reference the FXML file that the UI is based off of
     // The radio buttons will change the labels depending on which is selected
+    /**
+     * These are all the variables being used in this controller
+     * */
     @FXML
     public Label changeMe;
 
@@ -68,6 +76,9 @@ public class AddPartController implements Initializable {
     @FXML
     private TableColumn<Part, Float> partPriceCol;
 
+    /**
+     * This method is being used to keep the inhouse radio button selected by default
+     * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -76,6 +87,9 @@ public class AddPartController implements Initializable {
     }
 
     // This function is the button that will change from one window to the next window
+    /**
+     * This method is being used to send the user back to the main menu
+     * */
     public void toMain(ActionEvent actionEvent) throws IOException {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -92,6 +106,9 @@ public class AddPartController implements Initializable {
         }
     }
 
+    /**
+     * This method is being used to send the user back to the main menu after saving
+     * */
     public void saveRedirect(ActionEvent actionEvent) throws IOException{
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -109,10 +126,16 @@ public class AddPartController implements Initializable {
     }
 
     // These two functions will change the the last box in the add part depending on which radio button is selected
+    /**
+     * This first method will change the text depending on which radio button is selected
+     * */
     public void inHouse (ActionEvent actionEvent) {
         changeMe.setText("Machine ID: ");
     }
 
+    /**
+     * This first method will change the text depending on which radio button is selected
+     * */
     public void outSourced (ActionEvent actionEvent) {
         changeMe.setText("Company Name: ");
     }
@@ -122,6 +145,9 @@ public class AddPartController implements Initializable {
 
     }
 
+    /**
+     * This method will save everything in the fields
+     * */
     @FXML
     void onActionSavePart(ActionEvent event) throws IOException {
 
@@ -144,45 +170,50 @@ public class AddPartController implements Initializable {
                 alert.setContentText("Please enter the part name");
                 Optional<ButtonType> result = alert.showAndWait();
             } else {
-                if (minValid(partMin, partMax))
+                if (minValid(partMin, partMax) && inventoryIsValid(partMin, partMax, partInv))
                     if (inHouseRadio.isSelected()) {
                         try {
                             partMachineID = Integer.parseInt(partIDCompNameTxt.getText());
                             InHouse partInHouse = new InHouse(partID, partName, partPrice, partInv, partMin, partMax, partMachineID);
-                            partInHouse.setId(invDataProvider.getNewPartID());
-                            invDataProvider.addPart(partInHouse);
+                            partInHouse.setId(Inventory.getNewPartID());
+                            Inventory.addPart(partInHouse);
                             partAddition = true;
                         } catch (Exception e) {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setTitle("ERROR");
-                            alert.setContentText("There is an error in the entries, please re-enter the values and try again");
+                            alert.setContentText("The Machine ID must be a number");
                             Optional<ButtonType> result = alert.showAndWait();
                         }
                     }
                     if (outSourcedRadio.isSelected()) {
                         partCompName = partIDCompNameTxt.getText();
                         OutSourced partOutSourced = new OutSourced(partID, partName, partPrice, partInv, partMin, partMax, partCompName);
-                        partOutSourced.setId(invDataProvider.getNewPartID());
-                        invDataProvider.addPart(partOutSourced);
+                        partOutSourced.setId(Inventory.getNewPartID());
+                        Inventory.addPart(partOutSourced);
                         partAddition = true;
                     }
 
                     // After saving, the user is automatically redirected to the main form
                     if (partAddition) {
                         saveRedirect(event);
-
                 }
 
             }
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
-            alert.setContentText("There is an error in the entries, please re-enter the values and try again");
+            alert.setContentText("There is an error in one or more entries. Please re-enter and try again");
             Optional<ButtonType> result = alert.showAndWait();
         }
     }
 
     // Min should be less than Max; and Inv should be between those two values
+    /**
+     * This is being used to confirm that the minimum is not greater than the maximum
+     * @param min
+     * @param max
+     *
+     * */
     private boolean minValid(int min, int max) {
 
         boolean partMinValid = true;
@@ -192,9 +223,30 @@ public class AddPartController implements Initializable {
             partMinValid = false;
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
-            alert.setContentText("Minimum cannot be larger than the max");
+            alert.setContentText("Maximum must be larger than the minimum");
             Optional<ButtonType> result=alert.showAndWait();
         }
         return partMinValid;
+    }
+
+    /**
+     * This will check to make sure that the inventory is between the min and the max
+     * @param min
+     * @param max
+     * @param stock
+     * @return boolean
+     *
+     * */
+    private boolean inventoryIsValid (int min, int max, int stock){
+        boolean isValid = true;
+
+        if (stock < min || stock > max){
+            isValid = false;
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setContentText("Inventory is not valid, please enter a valid inventory");
+            Optional<ButtonType> result=alert.showAndWait();
+        }
+        return isValid;
     }
 }

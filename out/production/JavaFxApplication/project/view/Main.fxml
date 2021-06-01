@@ -70,6 +70,10 @@
                         <Insets bottom="20.0" left="50.0" top="75.0" />
                      </StackPane.margin>
                   </Label>
+                  <TextField fx:id="searchProdTxt" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#searchForProd" prefHeight="25.0" prefWidth="200.0" promptText="Search by Product ID or Name" snapToPixel="false">
+                     <StackPane.margin>
+                        <Insets left="350.0" top="75.0" />
+                     </StackPane.margin></TextField>
                </children></StackPane>
             <Label snapToPixel="false" text="Parts">
                <GridPane.margin>
@@ -94,6 +98,10 @@
                   <Font name="JetBrains Mono Regular" size="14.0" />
                </font>
             </Button>
+            <TextField fx:id="searchTxtBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#searchForPart" prefHeight="25.0" prefWidth="200.0" promptText="Search by Part ID or Name" snapToPixel="false">
+               <GridPane.margin>
+                  <Insets left="350.0" top="75.0" />
+               </GridPane.margin></TextField>
          </children>
       </GridPane>
       <Button layoutX="543.0" layoutY="492.0" mnemonicParsing="false" onAction="#exitApplication" prefHeight="25.0" prefWidth="70.0" text="Exit">
